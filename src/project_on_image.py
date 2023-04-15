@@ -6,6 +6,7 @@ import numpy as np
 # -(x rotation matrix)-> rotated vector -> spherical coordinates ->
 # -> coordinates on image
 
+
 # main function
 def project_on_image(point_coordinates, camera_coordinates, camera_angles):
     vector_coordinates = point_coordinates - camera_coordinates
@@ -23,8 +24,11 @@ def rotate_vector(vector_coordinates, camera_angles):
 # camera angles - roll, pitch, heading (in degrees)
 def get_rotation_matrix(camera_angles):
     roll_angle, pitch_angle, heading_angle = np.radians(camera_angles)
-    return get_roll_rotation_matrix(roll_angle) @ get_pitch_rotation_matrix(pitch_angle) @ get_heading_rotation_matrix(
-        heading_angle)
+    return (
+        get_roll_rotation_matrix(roll_angle)
+        @ get_pitch_rotation_matrix(pitch_angle)
+        @ get_heading_rotation_matrix(heading_angle)
+    )
 
 
 def get_roll_rotation_matrix(roll_angle):
@@ -47,8 +51,8 @@ def get_heading_rotation_matrix(heading_angle):
 
 def convert_to_spherical_coordinates(vector_coordinates):
     x, y, z = vector_coordinates
-    x_p_y_sq = x ** 2 + y ** 2
-    r = m.sqrt(x_p_y_sq + z ** 2)
+    x_p_y_sq = x**2 + y**2
+    r = m.sqrt(x_p_y_sq + z**2)
     theta = m.atan2(z, m.sqrt(x_p_y_sq))  # elev
     phi = m.atan2(y, x)  # az
     return np.array([r, theta, phi])
